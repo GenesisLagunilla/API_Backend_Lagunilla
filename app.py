@@ -1,19 +1,25 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/api/chat', methods=['POST'])
+# Optional: for checking if server is alive
+@app.route('/', methods=['GET'])
+def index():
+    return 'Server is running!'
+
+@app.route('/chat', methods=['POST'])
 def chat():
     data = request.get_json()
-    user_message = data.get('message', '').strip().lower()
+    message = data.get('message', '').lower()
 
-    if user_message == "hi":
-        return "hello genesis"
+    if message == 'hi':
+        response = 'hello, Master Genesis'
     else:
-        return "I didn't understand that."
-    
-    return jsonify({"reply": reply})
+        response = "I didn't understand that."
+
+    return jsonify({'response': response})
+
 if __name__ == '__main__':
-    app.run(debug=True,)
+    app.run(debug=True)
